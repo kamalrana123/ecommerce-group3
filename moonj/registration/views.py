@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse 
 from .models import registration,login,Address
+def home(request):
+    return render(request,'registeration/index.html')
 def logi(request):
     return render(request,'registeration/signup.html')
 def logout(request):
@@ -36,46 +38,43 @@ def signup(request):
             }
         return render(request,signup.html,context)
 def login1(request):
-    print("hello")
-    
-    #return HttpResponse("hello")
     try:
         del request.session['user_login_user_id']
     except:
         pass
-    if not request.session.has_key('user_login_user_id'):
-        print("hello")
-        return render(request,'registeration/login.html',{})
-    # if request.session.has_key('user_login_user_id'):
-    #     context = {
-    #         "user_id":request.session['user_login_user_id'],
-    #     }
-    #     return 
-    # if request.methos == 'POST' and request.POST.get('login'):
-    #     email = request.POST.get('email')
-    #     password = request.POST.get('password')
-    #     try:
-    #         data = registration.objects.get(email=email)    
-    #     except:
-    #         print("user not found")
-    #     else:
-    #         password = str(login.objects.get(email=data).password)
-    #         usdp=str(request.POST.get('password'))
-    #         if  usdp == password:
-    #             #login success
-    #             request.session['user_login_user_id'] = email
-    #             print("logged in")
-    #             context={
-    #                 "user_id":email,
-    #             }
-    #             return render(request, dashboard.html, context)
-    #         else:
-    #             context={
-    #                 "msg":"password not correct",
-    #             }
-    #             return render(request,login.html,context)
-    #    return render(request,login.html)
-    return HttpResponse("hello world")
+    if request.session.has_key('user_login_user_id'):
+        context = {
+            "user_id":request.session['user_login_user_id'],
+        }
+        return render(request,'',{})
+    if request.method == 'POST' and request.POST.get('login'):
+        email = request.POST.get('email')
+        #print(email)
+        password = request.POST.get('password')
+        email.lower()
+        try:
+            data = registration.objects.get(email=email)    
+        except:
+            print("user not found")
+        else:
+            password = str(login.objects.get(email=data).password)
+            usdp=str(request.POST.get('password'))
+            if  usdp == password:
+                #login success
+                request.session['user_login_user_id'] = email
+                print("logged in")
+                context={
+                    "user_id":email,
+                }
+                return render(request, dashboard.html, context)
+            else:
+                context={
+                    "msg":"password not correct",
+                }
+                return render(request,login.html,context)
+        return render(request,'registeration/index.html')
+    
+    return render(request,'registeration/login.html',{})
 class user_profile():
     def __init__(self,user_name,email,phone):
         self.user_name=user_name
