@@ -9,6 +9,7 @@ class product(models.Model):
     product_id = models.AutoField(primary_key=True)
     description = models.TextField()
     quantity = models.IntegerField(default=0)
+    image =  models.ImageField(upload_to="myimage",null=True)
     category_id = models.ForeignKey(category,on_delete=models.CASCADE)
     price = models.IntegerField()
 
