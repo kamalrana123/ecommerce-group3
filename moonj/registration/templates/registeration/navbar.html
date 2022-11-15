@@ -17,6 +17,11 @@
    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+   <style>
+      .foothover li a{
+        font-size:60px;
+      }
+   </style>
 </head>
 
 <body>
@@ -60,7 +65,7 @@
          <div class="my-row">
             <div class="my-column">
                <div class="my-header-img-div">
-                  <img src="images/slider-bg.webp" alt="img" style="height:90vh; width:50vw">
+                  <img src="{% static 'images/slider-bg.webp' %}" alt="img" style="height:90vh; width:50vw">
                </div>
             </div>
             <div class="my-column">
@@ -332,7 +337,7 @@
       <div class="container">
          <div class="box">
             <div class="arrival_bg_box" >
-               <img src="images/new_arrival.JPG" alt="" style="border-radius:50%;">
+               <img src="{% static 'images/new_arrival.JPG' %}" alt="" style="border-radius:50%;">
             </div>
             <div class="row">
                <div class="col-md-6 ml-auto">
@@ -376,7 +381,7 @@
                      </div>
                   </div>
                   <div class="img-box">
-                     <img src="images/p1.jpg" alt="">
+                     <img src="{% static 'images/p1.jpg' %}" alt="">
                   </div>
                   <div class="detail-box">
                      <h5>
@@ -401,7 +406,7 @@
                      </div>
                   </div>
                   <div class="img-box">
-                     <img src="images/p2.webp" alt="">
+                     <img src="{% static 'images/p2.webp' %}" alt="">
                   </div>
                   <div class="detail-box">
                      <h5>
@@ -426,7 +431,7 @@
                      </div>
                   </div>
                   <div class="img-box">
-                     <img src="images/p3.jpg" alt="">
+                     <img src="{% static 'images/p3.jpg' %}" alt="">
                   </div>
                   <div class="detail-box">
                      <h5>
@@ -449,18 +454,18 @@
    </section>
    <!-- end product section -->
    <!-- footer start -->
-   <footer>
+   <footer style="background-color:#607b86f2">
       <div class="container">
          <div class="row">
             <div class="col-md-4">
                <div class="full">
                   <div class="logo_footer">
-                     <a href="#"><img width="210" src="images/logo.png" alt="#" /></a>
+                     <a href="#" style="font-size: 30px; font-weight:bold;color:rgba(255, 0, 0, 0.712)">MoonJ</a>
                   </div>
                   <div class="information_f">
-                     <p><strong>ADDRESS:</strong> 28 White tower, Street Name New York City, USA</p>
-                     <p><strong>TELEPHONE:</strong> +91 987 654 3210</p>
-                     <p><strong>EMAIL:</strong> yourmain@gmail.com</p>
+                     <p><strong>ADDRESS:</strong> PG hostel Mnnit</p>
+                     <p><strong>TELEPHONE:</strong> 9318441731</p>
+                     <p><strong>EMAIL:</strong> Sanjugangwar667@gmail.com</p>
                   </div>
                </div>
             </div>
@@ -471,45 +476,20 @@
                         <div class="col-md-6">
                            <div class="widget_menu">
                               <h3>Menu</h3>
+                              <style>
+                                 #foot:hover{
+                                   color:red;
+                                   font-size:20px;
+                                   font-weight:bold;
+                                 }
+                              </style>
                               <ul>
-                                 <li><a href="#">Home</a></li>
-                                 <li><a href="#">About</a></li>
-                                 <li><a href="#">Services</a></li>
-                                 <li><a href="#">Blog</a></li>
-                                 <li><a href="#">Contact</a></li>
+                                 <li><a href="#" id="foot">Home</a></li>
+                                 <li><a href="#" id="foot">Products</a></li>
+                                 <li><a href="#" id="foot">Login/SignUp</a></li>
+                                 <li><a href="#" id="foot">Contact</a></li>
                               </ul>
                            </div>
-                        </div>
-                        <div class="col-md-6">
-                           <div class="widget_menu">
-                              <h3>Account</h3>
-                              <ul>
-                                 <li><a href="#">Account</a></li>
-                                 <li><a href="#">Checkout</a></li>
-                                 <li><a href="#">Login</a></li>
-                                 <li><a href="#">Register</a></li>
-                                 <li><a href="#">Shopping</a></li>
-                                 <li><a href="#">Widget</a></li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-5">
-                     <div class="widget_menu">
-                        <h3>Newsletter</h3>
-                        <div class="information_f">
-                           <p>Subscribe by our newsletter and get update protidin.</p>
-                        </div>
-                        <div class="form_sub">
-                           <form>
-                              <fieldset>
-                                 <div class="field">
-                                    <input type="email" placeholder="Enter Your Mail" name="email" />
-                                    <input type="submit" value="Subscribe" />
-                                 </div>
-                              </fieldset>
-                           </form>
                         </div>
                      </div>
                   </div>

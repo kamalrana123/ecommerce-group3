@@ -17,6 +17,7 @@
    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/sanjay.css' %}" rel="stylesheet" />
 </head>
 
 <body>
@@ -54,7 +55,7 @@
       </header>
     <div class="frow">
         <div class="fcolumn">
-            <img src="images/login.jpg" alt="login_image" height="100%" width="100%" class="fimg">
+            <img src="{% static 'images/login.jpg' %}" alt="login_image" height="100%" width="100%" class="fimg">
         </div>
         <div class="fcolumn">
             <div
@@ -64,26 +65,26 @@
                 <form action="">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="email" class="form-control" placeholder="Your Name" id="name">
+                        <input type="email" required class="form-control" placeholder="Your Name" id="name" name="name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email address:</label>
-                        <input type="email" class="form-control" placeholder="Enter email" id="email">
+                        <input type="text" required class="form-control" placeholder="Enter email" id="email" name="email">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
-                        <input type="email" class="form-control" placeholder="Phone Number" id="phone">
+                        <input type="text" required class="form-control" placeholder="Phone Number" id="phone" name="phone">
                     </div>
                     <div class="form-group">
                         <label for="pwd">Password:</label>
-                        <input type="password" class="form-control" placeholder="Enter password" id="pwd">
+                        <input type="password" required class="form-control" placeholder="Enter password" id="pwd" name="password">
                     </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" type="checkbox"> Remember me
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Submit</button>
                 </form>
             </div>
         </div>

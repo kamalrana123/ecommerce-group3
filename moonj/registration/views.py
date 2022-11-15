@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse 
 from .models import registration,login,Address
 def logi(request):
-    return render(request,'registeration/navbar.html')
+    return render(request,'registeration/signup.html')
 def logout(request):
     try:
         del request.session['user_login_user_id']
