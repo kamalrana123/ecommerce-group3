@@ -1,17 +1,57 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-
-    <title>Login Moonj</title>
+   <!-- Basic -->
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <!-- Mobile Metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <!-- Site Metas -->
+   <meta name="keywords" content="" />
+   <meta name="description" content="" />
+   <meta name="author" content="" />
+   <title>Moonj World</title>
+   <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+   <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+   <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+   <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
 </head>
 
 <body>
+<header class="header_section" style="position:sticky;top:0 ">
+         <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+               <a class="navbar-brand" href="index.html" style="font-size: 30px; font-weight:bold;color:rgba(255, 0, 0, 0.712)">MoonJ</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav">
+                     <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="Cart.html">Cart</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="product.html">Products</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login/SignUp</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                     </li>
+                     <li class="nav-item">
+                     </li>
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </header>
     <div class="frow">
         <div class="fcolumn">
             <img src="images/login.jpg" alt="login_image" height="100%" width="100%" class="fimg">
@@ -38,6 +78,9 @@
             </div>
         </div>
     </div>
+    <div class="cpy_">
+      <p class="mx-auto">© 2022 All Rights Reserved By Moonj Group</p>
+   </div>
 </body>
 
 </html>

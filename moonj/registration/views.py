@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+
 from .models import *
+def logi(request):
+    return render(request,'registeration/contact.html',{})
 def signup(request):
     if request.method == 'POST' and request.POST.get('signup'):
         name  = request.POST.get('name')

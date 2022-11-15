@@ -32,7 +32,7 @@ def dashboard(request):
     print(data)
     # if request.session.has_key['user_login_user_id']:
     #     return render
-    # return render
+     #return render
     return HttpResponse("hello")
 def cart(request):
     object_list = []
