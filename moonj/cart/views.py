@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from .models import product,cart
+from registration.models import registration,login,Address
 # Create your views here.
 class dash_product():
     def __init__(self,product_name,product_id,price,quantity):
@@ -25,32 +26,38 @@ def dashboard(request):
     else:
         for x in data:
             ob = dash_product(x.product_name,x.product_id,x.price,x.quantity)
+            #print(x.category_id.category_name)
             object_list.append(ob)
     context ={
         "data":object_list
     }
-    print(data)
-    # if request.session.has_key['user_login_user_id']:
+    # if request.session.has_key('user_login_uesr_id'):
     #     return render
      #return render
     return HttpResponse("hello")
-def cart(request):
+def cart1(request):
     object_list = []
 
-    if request.session.has_key['user_login_user_id'] and request.POST.get("show_cart"):
+    if request.session.has_key('user_login_uesr_id') and request.POST.get("show_cart"):
         user_id = request.session['user_login_user_id']
-        data = cart.objects.get(email=user_id)
-        for x in data:
-            prod = product.objects.get(product_id = x.product_id)
+        data = registration.objects.get(email= user_id)
+        data1 = cart.objects.filter(email=data)
+        
+        print(data1)
+        for x in data1:
+
+            prod = product.objects.get(product_id = x.product_id.product_id)
+            #print(prod.product_name)
             ob = cart_object(prod.product_name,prod.product_id,prod.price,x.quantity)
             object_list.append(ob)
         context ={
             "data":object_list
         }
+        #print(object_list)
         return render()
     return render()
 def add_to_cart(request):
-    if request.session.has_key['user_login_user_id'] and request.GET.get("add_to_cart"):
+    if request.session.has_key('user_login_uesr_id') and request.GET.get("add_to_cart"):
         quantity = 1
         product_id = request.GET.get('product_id')
         user_id = request.session['user_login_user_id']
@@ -58,4 +65,3 @@ def add_to_cart(request):
         data.save()
 def checkout(request):
     pass
-    
