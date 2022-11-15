@@ -62,14 +62,16 @@
                 style="font-size: 40px; position:relative;top:1vh;left:5vw;font-weight: bold; color: rgb(73, 83, 194);"> Be A Part Of<br> Moonj World
             </div>
             <div class="fform-div" style="top:3vh;">
-                <form action="">
+                <form action="" method="post">
+                    {% csrf_token %}
+	                {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="email" required class="form-control" placeholder="Your Name" id="name" name="name">
+                        <input type="text" required class="form-control" placeholder="Your Name" id="name" name="name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email address:</label>
-                        <input type="text" required class="form-control" placeholder="Enter email" id="email" name="email">
+                        <input type="email" required class="form-control" placeholder="Enter email" id="email" name="email">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
@@ -84,7 +86,7 @@
                             <input class="form-check-input" type="checkbox"> Remember me
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                    <button type="submit" class="btn btn-primary" value="signup" name="signup">Submit</button>
                 </form>
             </div>
         </div>

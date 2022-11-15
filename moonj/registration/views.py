@@ -2,9 +2,9 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse 
 from .models import registration,login,Address
 def home(request):
-    return render(request,'registeration/index.html')
-def logi(request):
-    return render(request,'registeration/signup.html')
+    return render(request,'registeration/navbar.html')
+def contact(request):
+    return render(request, 'registeration/contact.html')
 def logout(request):
     try:
         del request.session['user_login_user_id']
@@ -13,6 +13,7 @@ def logout(request):
     else:
         return redirect('login1')
 def signup(request):
+    print("hello")
     if request.session.has_key('user_login_user_id'):
         return redirect('logout')
     if request.method == 'POST' and request.POST.get('signup'):
@@ -31,13 +32,14 @@ def signup(request):
             context = {
                 "msg":"successfully",
             }
-            return render(request,'login1',context)
+            return render(request,'login/',context)
         else:
             context ={
                 "msg":"user already exists",
             }
-        return render(request,signup.html,context)
+    return render(request,'registeration/signup.html',{})
 def login1(request):
+    print("hello")
     try:
         del request.session['user_login_user_id']
     except:
@@ -47,9 +49,11 @@ def login1(request):
             "user_id":request.session['user_login_user_id'],
         }
         return render(request,'',{})
+    print(request.method)
+    print(request.POST.get('login'))
     if request.method == 'POST' and request.POST.get('login'):
         email = request.POST.get('email')
-        #print(email)
+        print(email)
         password = request.POST.get('password')
         email.lower()
         try:
@@ -66,13 +70,13 @@ def login1(request):
                 context={
                     "user_id":email,
                 }
-                return render(request, dashboard.html, context)
+                return render(request,'registeration/navbar.html', context)
             else:
                 context={
                     "msg":"password not correct",
                 }
-                return render(request,login.html,context)
-        return render(request,'registeration/index.html')
+                return redirect('login/')
+        return render(request,'registeration/login.html')
     
     return render(request,'registeration/login.html',{})
 class user_profile():
