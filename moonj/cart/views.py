@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse 
-from .models import product,cart
+from .models import product,cart,trasaction,user_orders,category
 from registration.models import registration,login,Address
 from registration.views import login1
 from datetime import datetime
@@ -17,12 +17,13 @@ class dash_product():
     
 
 class cart_object():
-    def __init__(self,product_name,product_id,price,quantity,img):
+    def __init__(self,product_name,product_id,price,quantity,img,product_transaction_id):
         self.product_name = product_name
         self.product_id = product_id
         self.price = price
         self.quantity =quantity
         self.img = img
+        self.product_transaction_id =product_transaction_id
 
 
 def dashboard(request):
@@ -61,26 +62,24 @@ def dashboard(request):
 
 def cart1(request):
     object_list = []
-    
-    if request.session.has_key('user_login_uesr_id') and request.POST.get("show_cart"):
+    if request.session.has_key('user_login_user_id'):
         user_id = request.session['user_login_user_id']
         data = registration.objects.get(email= user_id)
-        data1 = cart.objects.filter(email=data)
-        
+        data1 = cart.objects.filter(email=data).order_by('time').reverse()
         print(data1)
         for x in data1:
 
             prod = product.objects.get(product_id = x.product_id.product_id)
             print(prod.product_name)
-            ob = cart_object(prod.product_name,prod.product_id,prod.price,x.quantity,x.image)
+            ob = cart_object(prod.product_name,prod.product_id,prod.price,x.quantity,prod.image,x.product_transaction_id)
             print(prod.image)           
             object_list.append(ob)
         context ={
-            "data":object_list
+            "data":object_list,
         }
         #print(object_list)
-        return render()
-    return render()
+        return render(request,'registeration/cart.html',context)
+    return redirect('/login')
 
 
 def add_to_cart(request):
@@ -99,17 +98,25 @@ def add_to_cart(request):
 
         data = cart(email = user_obj,product_id=product_obj,quantity=quantity,time=objtime)
         data.save()
-    return HttpResponse("hello")
+    return redirect('/cart')
 
 
 def remove_from_cart(request):
-    if request.session.has_key('user_login_user_id') and request.GET.get("remove_from_cart"):
+    if request.session.has_key('user_login_user_id'):
         user_id= request.session['user_login_user_id']
-        product_transaction_id = request.session.cart_product_id
-        data_obj = cart.objects.get(product_transaction_id=product_transaction_id)
-        data_obj.delete()
+        product_transaction_id = request.GET.get('id')
+        try:
+            data_obj = cart.objects.get(product_transaction_id=product_transaction_id)
+        except:
+            return redirect('/cart')
+        else:
+            data_obj.delete()
+        return redirect('/cart')
     return redirect('login/')
+
+
 def checkout(request):
+    return render(request,'registeration/checkout.html')
     if request.session.has_key('user_login_user_id') and request.GET.get("checkout"):
         user_id = request.session['user_login_user_id']
         data = registration.objects.get(email =user_id)
@@ -121,3 +128,32 @@ def checkout(request):
            total_price= total_price+(price*x.quantity)
         return HttpResponse(total_price)
 
+
+class orders_users():
+    def __init__(self,product_name,product_id,quantity, price,status,time,img):
+        self.product_name =product_name
+        self.product_id = product_id
+        self.quantity = quantity
+        self.price = price
+        self.status = status
+        self.time =time
+        self.img =img
+#creating orders of the users
+def orders(request):
+    object_list = []
+    if request.session.has_key('user_login_user_id'):
+        user_id=request.session['user_login_user_id']
+        data = registration.objects.get(email=user_id)
+        data_obj = user_orders.objects.filter(email=data).order_by('time').reverse()
+        for x in data_obj:
+            product_id = x.product_id.product_id
+            product_obj = product.objects.get(product_id=product_id)
+            ob = orders_users(product_obj.product_name,product_obj.product_id,x.quantity,x.price,x.status,x.time,product_obj.image)
+            object_list.append(ob)
+            print(product_id)
+            context={
+                "data":object_list
+            }
+            print(object_list)
+        return render(request,'registeration/orders.html',context)
+    return render(request,'registeration/orders.html')

@@ -86,20 +86,23 @@
                Price
             </th>
          </tr>
+         {% for x in data %}
          <tr>
+            
             <td>
-               <img src="{% static 'images/p3.jpg' %}" height="200px" width="200px" style="objject-fit:cover">
+               <img src="/media/{{x.img}}" height="200px" width="200px" style="objject-fit:cover">
             </td>
             <td>
-               Product Name
+               {{x.product_name }}
             </td>
             <td>
-               Quantity
+               {{x.quantity}}
             </td>
             <td>
-               Price
+               {{x.price}}
             </td>
          </tr>
+         {% endfor %}
       </table>
       <!-- end product section -->
       <!-- footer section -->

@@ -66,11 +66,12 @@
           </div>
           <div class="card-body">
             <!-- Single item -->
+            {% for x in data %}
             <div class="row">
               <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                 <!-- Image -->
                 <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                  <img src="{% static 'images/p1.jpg' %}"
+                  <img src="/media/{{x.img}}"
                     class="w-100" alt="Blue Jeans Jacket" />
                   <a href="#!">
                     <div class="mask" style="background-color: rgba(255,0,0, 0.712)"></div>
@@ -81,10 +82,10 @@
 
               <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                 <!-- Data -->
-                <p><strong>Moonj Product</strong></p>
+                <p><strong>{{ x.product_name }}</strong></p>
                 <p>Color: yellow</p>
-                <p>Size: M</p>
-                  <button style="height:50px; width:100px; border-radius:5%;font-size:20px;background-color:rgba(255,0,0,0.712)">Delete</button>
+                <p>price: rs {{x.price}}</p>
+                  <a href="/remove_from_cart?id={{x.product_transaction_id}}"> <button class= "btn btn-danger"">Delete</button></a>
                 <!-- Data -->
               </div>
 
@@ -125,7 +126,7 @@
 
             <hr class="my-4" />
 
-
+            {% endfor %}
             <!-- Single item -->
           </div>
         </div>

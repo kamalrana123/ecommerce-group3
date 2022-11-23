@@ -39,7 +39,7 @@ def signup(request):
             }
     return render(request,'registeration/signup.html',{})
 def login1(request):
-    print("hello")
+    #print("hello")
     try:
         del request.session['user_login_user_id']
     except:
@@ -49,8 +49,8 @@ def login1(request):
             "user_id":request.session['user_login_user_id'],
         }
         return render(request,'',{})
-    print(request.method)
-    print(request.POST.get('login'))
+    #print(request.method)
+    #print(request.POST.get('login'))
     if request.method == 'POST' and request.POST.get('login'):
         email = request.POST.get('email')
         print(email)
@@ -75,7 +75,7 @@ def login1(request):
                 context={
                     "msg":"password not correct",
                 }
-                return redirect('login/')
+                return redirect('/login')
         return render(request,'registeration/login.html')
     
     return render(request,'registeration/login.html',{})

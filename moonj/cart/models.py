@@ -5,6 +5,7 @@ from  datetime import datetime
 class category(models.Model):
     category_name = models.CharField(max_length=50)
     category_id = models.AutoField(primary_key=True)
+
 class product(models.Model):
     product_name = models.CharField(max_length=500)
     product_id = models.AutoField(primary_key=True)
@@ -20,9 +21,18 @@ class cart(models.Model):
     product_id = models.ForeignKey(product,on_delete=models.CASCADE)
     quantity = models.IntegerField()
     time = models.TimeField(auto_now=True,null=True)
+
 class trasaction(models.Model):
     trasaction_id = models.AutoField(primary_key=True)
     email = models.ForeignKey(registration,on_delete=models.CASCADE)
     product_transaction_id = models.ForeignKey(cart,on_delete=models.CASCADE)
     status = models.IntegerField()
     time = models.TimeField(auto_now=True,null=True)
+
+class user_orders(models.Model):
+    email = models.ForeignKey(registration,on_delete=models.CASCADE)
+    time = models.TimeField()
+    product_id = models.ForeignKey(product,on_delete=models.CASCADE)
+    price =models.IntegerField()
+    quantity= models.IntegerField()
+    status  = models.BooleanField()
