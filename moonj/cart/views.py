@@ -6,6 +6,10 @@ from registration.views import login1
 from datetime import datetime
 # Create your views here.
 
+class user_data_object():
+    def __init__(self,email,name):
+        self.email = email
+        self.name = name
 
 class dash_product():
     def __init__(self,product_name,product_id,price,quantity,img):
@@ -31,6 +35,11 @@ def dashboard(request):
     # if request.session.has_key('user_login_uesr_id'):
     #     return render
      #return render
+    user_obj = user_data_object("","")
+    if request.session.has_key('user_login_user_id'):
+        user_id= request.session['user_login_user_id']
+        name = registration.objects.get(email=user_id).name
+        user_obj = user_data_object(user_id,name)
     if request.GET.get('pk')=="2":
         try:
             data = product.objects.all()[:9]
@@ -42,7 +51,8 @@ def dashboard(request):
                 print(ob.img.url)
                 object_list.append(ob)
         context ={
-        "data":object_list
+        "data1":object_list,
+        "data":user_obj
         }
         return render(request,'registeration/product.html',context)
     try:
@@ -55,13 +65,19 @@ def dashboard(request):
             print(ob.img.url)
             object_list.append(ob)
     context ={
-        "data":object_list
+        "data1":object_list,
+        "data":user_obj
     }
     return render(request,'registeration/product.html',context)
 
 
 def cart1(request):
     object_list = []
+    user_obj = user_data_object("","")
+    if request.session.has_key('user_login_user_id'):
+        user_id= request.session['user_login_user_id']
+        name = registration.objects.get(email=user_id).name
+        user_obj = user_data_object(user_id,name)
     if request.session.has_key('user_login_user_id'):
         user_id = request.session['user_login_user_id']
         data = registration.objects.get(email= user_id)
@@ -75,7 +91,8 @@ def cart1(request):
             print(prod.image)           
             object_list.append(ob)
         context ={
-            "data":object_list,
+            "data1":object_list,
+            "data":user_obj,
         }
         #print(object_list)
         return render(request,'registeration/cart.html',context)
@@ -98,7 +115,8 @@ def add_to_cart(request):
 
         data = cart(email = user_obj,product_id=product_obj,quantity=quantity,time=objtime)
         data.save()
-    return redirect('/cart')
+        return redirect('/cart')
+    return redirect('/login')
 
 
 def remove_from_cart(request):
@@ -112,7 +130,7 @@ def remove_from_cart(request):
         else:
             data_obj.delete()
         return redirect('/cart')
-    return redirect('login/')
+    return redirect('/login')
 
 
 def checkout(request):
@@ -141,6 +159,11 @@ class orders_users():
 #creating orders of the users
 def orders(request):
     object_list = []
+    user_obj = user_data_object("","")
+    if request.session.has_key('user_login_user_id'):
+        user_id= request.session['user_login_user_id']
+        name = registration.objects.get(email=user_id).name
+        user_obj = user_data_object(user_id,name)
     if request.session.has_key('user_login_user_id'):
         user_id=request.session['user_login_user_id']
         data = registration.objects.get(email=user_id)
@@ -152,8 +175,9 @@ def orders(request):
             object_list.append(ob)
             print(product_id)
             context={
-                "data":object_list
+                "data1":object_list,
+                "data":user_obj,
             }
             print(object_list)
         return render(request,'registeration/orders.html',context)
-    return render(request,'registeration/orders.html')
+    return redirect('/login')

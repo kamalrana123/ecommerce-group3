@@ -1,17 +1,42 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse 
 from .models import registration,login,Address
+class user_data_object():
+    def __init__(self,email,name):
+        self.email = email
+        self.name = name
 def home(request):
-    return render(request,'registeration/navbar.html')
-def contact(request):
-    return render(request, 'registeration/contact.html')
-def logout(request):
+    if not request.session.has_key('user_login_user_id'):
+        return render(request,'registeration/navbar.html')
+    user_id= request.session['user_login_user_id']
     try:
-        del request.session['user_login_user_id']
+        data_obj = registration.objects.get(email=user_id)
     except:
-        pass
+        return redirect('/')
     else:
-        return redirect('login1')
+        user_obj = user_data_object(data_obj.email,data_obj.name )
+        context={
+            "data":user_obj,
+        }
+        return render(request,'registeration/navbar.html',context)
+
+    
+def contact(request):
+    if not request.session.has_key('user_login_user_id'):
+        return render(request,'registeration/contact.html')
+    user_id= request.session['user_login_user_id']
+    try:
+        data_obj = registration.objects.get(email=user_id)
+    except:
+        return redirect('/contact')
+    else:
+        user_id= request.session['user_login_user_id']
+        user_obj = user_data_object(data_obj.email,data_obj.name )
+        context={
+            "data":user_obj,
+        }
+        return render(request, 'registeration/contact.html',context)
+
 def signup(request):
     print("hello")
     if request.session.has_key('user_login_user_id'):
@@ -39,7 +64,7 @@ def signup(request):
             }
     return render(request,'registeration/signup.html',{})
 def login1(request):
-    #print("hello")
+ 
     try:
         del request.session['user_login_user_id']
     except:
@@ -70,7 +95,8 @@ def login1(request):
                 context={
                     "user_id":email,
                 }
-                return render(request,'registeration/navbar.html', context)
+                return redirect('/')
+                #return render(request,'registeration/navbar.html', context)
             else:
                 context={
                     "msg":"password not correct",
@@ -79,13 +105,23 @@ def login1(request):
         return render(request,'registeration/login.html')
     
     return render(request,'registeration/login.html',{})
+
+def logout(request):
+    try:
+        del request.session['user_login_user_id']
+    except:
+        pass
+    else:
+        return redirect('/login')
+
+
 class user_profile():
-    def __init__(self,user_name,email,phone):
-        self.user_name=user_name
+    def __init__(self,name,email,phone):
+        self.name=name
         self.email=email
         self.phone=phone
 def profile(request):
-    if request.session.has_key('user_login_user_id') and request.GET.get('viewProfile'):
+    if request.session.has_key('user_login_user_id'):
         user_id = request.session['user_login_user_id']
         try:
             data = registration.objects.get(email=user_id)
@@ -96,7 +132,7 @@ def profile(request):
         context = {
             "data":ob,
         }
-        #print(ob.user_name)
+        return render(request,'registeration/profile.html',context)
         
     if request.session.has_key('user_login_user_id') and request.GET.get('updateProfile'):
         user_id = request.session['user_login_user_id']
@@ -115,6 +151,7 @@ class address_obj():
         self.address_id = address_id
 
 def add_new_address(request):
+    
     if request.session.has_key('user_login_user_id') and request.GET.get('add_new_address'):
         user_id = request.session('user_login_user_id')
         description = request.GET.get('description')
@@ -123,7 +160,7 @@ def add_new_address(request):
         data = registration.objects.get(email =user_id)
         new_address_object = Address(email=data,address= description,city=city,pincode=pincode)
         new_address_object.save()
-        return HttpResponse("hello")
+    return render(request,'registeration/New_Address.html',{})
 def changeAddress(request):
     if request.session.has_key('user_login_uesr_id') and request.GET.get('updateaddress'):
         address = request.GET.get('address')
@@ -166,3 +203,10 @@ def change_password(request):
         else:
             return render(request)
         
+def logout(request):
+    try:
+        del request.session['user_login_user_id']
+    except:
+        pass
+    else:
+        return redirect('/login')

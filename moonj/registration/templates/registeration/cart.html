@@ -11,7 +11,7 @@
           </div>
           <div class="card-body">
             <!-- Single item -->
-            {% for x in data %}
+            {% for x in data1 %}
             <div class="row">
               <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                 <!-- Image -->
@@ -31,7 +31,7 @@
                 <p>Color: yellow</p>
                 <p>price: rs {{x.price}}</p>
                   <a href="/remove_from_cart?id={{x.product_transaction_id}}"> <button class= "btn btn-danger"">Delete</button></a>
-                <!-- Data -->
+                <!--- Data --->
               </div>
 
               <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
@@ -112,9 +112,9 @@
               </li>
             </ul>
 
-            <button type="button" class="btn btn-primary btn-lg btn-block" style="background-color:rgba(255, 0, 0, 0.712)">
+            <a href="/checkout"><button type="button" class="btn btn-primary btn-lg btn-block" style="background-color:rgba(255, 0, 0, 0.712)">
               Go to checkout
-            </button>
+            </button></a>
           </div>
         </div>
       </div>
