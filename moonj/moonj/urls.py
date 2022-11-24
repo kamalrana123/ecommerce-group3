@@ -33,9 +33,11 @@ urlpatterns = [
     path('checkout/',car.checkout),
     path('orders/',car.orders),
     path('profile',res.profile),
-    path('add_new_address',res.add_new_address),
-    path('edit_your_profile',res.change_profile),
-    path('change_password',res.change_password),
+    path('add_new_address/',res.add_new_address),
+    path('edit_your_profile/',res.change_profile),
+    path('change_password/',res.change_password),
+    path('verify/<auth_token>',res.verify),
+
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

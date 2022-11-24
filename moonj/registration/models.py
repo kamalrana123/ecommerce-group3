@@ -4,6 +4,10 @@ class registration(models.Model):
     name = models.CharField(max_length=100, verbose_name="name")
     email = models.EmailField(max_length=254,verbose_name="email",unique=True)
     phone = models.CharField(max_length=50,verbose_name="phone")
+    auth_token=models.CharField(max_length=100)
+    is_verified = models.BooleanField(default=False)
+    def __str__(self):
+        return self.name
 class login(models.Model):
     email = models.ForeignKey(registration,on_delete=models.CASCADE)
     password = models.CharField(max_length=500)

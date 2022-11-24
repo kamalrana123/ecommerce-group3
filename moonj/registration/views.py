@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from .models import registration,login,Address
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
+from django.contrib import messages
+from django.conf import settings
+from django.core.mail import send_mail
+
+import uuid
 import requests
 import json
 
@@ -52,7 +57,6 @@ def contact(request):
 
 
 def signup(request):
-    print("hello")
     if request.session.has_key('user_login_user_id'):
         return redirect('logout')
     if request.method == 'POST' and request.POST.get('signup'):
@@ -63,11 +67,13 @@ def signup(request):
         try:
             data = registration.objects.get(email=email)
         except:
-            NewUserObject = registration(name = name, email = email,phone = phone)
+            auth_token =str(uuid.uuid4())
+            NewUserObject = registration(name = name, email = email,phone = phone,auth_token=auth_token)
             NewUserObject.save()
             data = registration.objects.get(email=email);
             NewLoginObject = login(email=data,password=password)
             NewLoginObject.save()
+            send_mail_after_registration(email,auth_token)
             context = {
                 "msg":"successfully",
             }
@@ -103,24 +109,24 @@ def login1(request):
         except:
             print("user not found")
         else:
-            password = str(login.objects.get(email=data).password)
-            usdp=str(request.POST.get('password'))
-            if  check_password(usdp,password):
-                #login success
-                request.session['user_login_user_id'] = email
-                print("logged in")
-                context={
-                    "user_id":email,
-                }
-                return redirect('/')
+            if data.is_verified:
+                password = str(login.objects.get(email=data).password)
+                usdp=str(request.POST.get('password'))
+                if  check_password(usdp,password):
+                    #login success
+                    request.session['user_login_user_id'] = email
+                    print("logged in")
+                    context={
+                        "user_id":email,
+                    }
+                    return redirect('/')
                 #return render(request,'registeration/navbar.html', context)
-            else:
-                context={
-                    "msg":"password not correct",
-                }
+                else:
+                    context={
+                        "msg":"password not correct",
+                    }
                 return redirect('/login')
         return render(request,'registeration/login.html')
-    
     return render(request,'registeration/login.html',{})
 
 
@@ -310,3 +316,31 @@ def logout(request):
         pass
     else:
         return redirect('/login')
+
+
+
+def send_mail_after_registration(email , token):
+    subject = 'Your accounts need to be verified'
+    message = f'Hi paste the link to verify your account http://127.0.0.1:8000/verify/{token}'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message , email_from ,recipient_list )
+
+def verify(request , auth_token):
+    try:
+        profile_obj = registration.objects.filter(auth_token = auth_token).first()
+    
+
+        if profile_obj:
+            if profile_obj.is_verified:
+                messages.success(request, 'Your account is already verified.')
+                return redirect('/accounts/login')
+            profile_obj.is_verified = True
+            profile_obj.save()
+            messages.success(request, 'Your account has been verified.')
+            return redirect('/login')
+        else:
+            return redirect('/error')
+    except Exception as e:
+        print(e)
+        return redirect('/')
