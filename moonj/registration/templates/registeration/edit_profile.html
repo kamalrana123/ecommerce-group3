@@ -18,11 +18,11 @@
          {% csrf_token %}
       <div class="form-group">
          <label for="new_name">Enter New Name</label>
-         <input type="number" class="form-control" id="new_name" placeholder="Enter Your New Name">
+         <input type="text" value="{{ data.name}}" name="name" class="form-control" id="new_name" placeholder="Enter Your New Name">
          <label for="new_mobile">Enter Your New Phone Number</label>
-         <input type="number" class="form-control" id="new_mobile" placeholder="Enter Your New Number">
+         <input type="number" value="{{data.phone }}" name="phone" class="form-control" id="new_mobile" placeholder="Enter Your New Number">
       </div>
-         <button type="submit" class="btn btn-danger" style="width:40vw;margin-bottom:3vh;">Submit</button>
+         <button type="submit" name="updateProfile" value="submit" class="btn btn-danger" style="width:40vw;margin-bottom:3vh;">Submit</button>
       </form>
       <!-- footer section -->
 
