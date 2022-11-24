@@ -34,6 +34,8 @@ urlpatterns = [
     path('orders/',car.orders),
     path('profile',res.profile),
     path('add_new_address',res.add_new_address),
+    path('edit_your_profile',res.change_profile),
+    path('change_password',res.change_password),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

@@ -77,4 +77,31 @@ def viewProfile(request):
         context = {
             "data":obj,
         }
+def update_profile(request):
+    if request.session.has_key('admin_login_id'):
+        user_id = request.session.has_key('admin_login_id')
+        user = admin_login.objects.get(user_id =user_id)
+        obj = profile(user.user_id,user.name)
+
+        context = {
+            "data":obj,
+        }
+    if request.session.has_key('admin_login_id') and request.GET.get('update_profile'):
+        user_id = request.session['admin_login_id']
+        user = admin_login.objects.get(user_id =user_id)
+        # getting info from the user
+        name= request.GET.get('name')
+        user.name = name
+        user.save()
+    if request.session.has_key('admin_login_id') and request.POST.get('update_password'):
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        user_id = request.session['admin_login_id']
+        data_password = str(admin_login.objects.get(user_id=user_id).password)
+        
+        if old_password == data_password:
+            admin_object = admin_login.objects.get(user_id=user_id)
+            admin_object.password = new_password
+            admin_object.save()
+            
 

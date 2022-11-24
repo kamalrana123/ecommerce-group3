@@ -15,22 +15,17 @@
       </section>
       <!-- end inner page section -->
       <form style="width:40vw;margin-left:30vw;">
-         {% csrf_token %}
       <div class="form-group">
-         <label for="building_number">Building Number / flat number</label>
-         <input type="number" class="form-control" id="building_number" placeholder="Enter Your Building Number">
-         <label for="street_number">Enter Your Street Number</label>
-         <input type="number" class="form-control" id="street_number" placeholder="Street Number">
+         <label for="building_number">Flat, House no., Building, Company, Apartment</label>
+         <input type="text" name="flat" class="form-control" id="building_number" placeholder="Enter Your Building Number">
+         <label for="street_number">Area, Street, Sector, Village</label>
+         <input type="text" name="area" class="form-control" id="street_number" placeholder="Street Number">
          <label for="city">Enter Your City</label>
-         <input type="text" class="form-control" id="city" placeholder="Enter Your City">
-         <label for="district">Enter Your District</label>
-         <input type="text" class="form-control" id="district" placeholder="Enter Your District">
+         <input type="text" name="city" class="form-control" id="city" placeholder="Enter Your City">
          <label for="pin">Enter Your Pincode</label>
-         <input type="text" class="form-control" id="pin" placeholder="Enter Your Pincode">
-         <label for="state">Enter Your State</label>
-         <input type="text" class="form-control" id="state" placeholder="Enter Your State">
+         <input type="text" name="pincode" class="form-control" id="pin" placeholder="Enter Your Pincode">
+         <button type="submit" name="add_new_address" value="submit" class="btn btn-danger" style="width:40vw;margin-bottom:3vh;">Add This Address</button>
       </div>
-         <button type="submit" name="add_new_address" class="btn btn-danger" style="width:40vw;margin-bottom:3vh;">Add This Address</button>
       </form>
       <!-- footer section -->
 {% endblock content %}

@@ -174,10 +174,10 @@ def orders(request):
             ob = orders_users(product_obj.product_name,product_obj.product_id,x.quantity,x.price,x.status,x.time,product_obj.image)
             object_list.append(ob)
             print(product_id)
-            context={
-                "data1":object_list,
-                "data":user_obj,
-            }
-            print(object_list)
+        context={
+            "data1":object_list,
+            "data":user_obj,
+        }
+        print(object_list)
         return render(request,'registeration/orders.html',context)
     return redirect('/login')
