@@ -10,6 +10,14 @@
             <div class="fform-div">
             <form action="" method="post">
                {% csrf_token %}
+               {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-info">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+      
+                {% endif %}
                 <div class="form-group">
                   <label for="email">Email address:</label>
                   <input type="email" class="form-control" placeholder="Enter email" id="email" name="email">

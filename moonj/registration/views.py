@@ -40,6 +40,13 @@ def home(request):
 
 def contact(request):
     if not request.session.has_key('user_login_user_id'):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+            send_mail_contact_us(email , name, subject,message )
+            messages.success(request,'Thank You for contacting us! We will get back to you soon')
         return render(request,'registeration/contact.html')
     user_id= request.session['user_login_user_id']
     try:
@@ -52,6 +59,13 @@ def contact(request):
         context={
             "data":user_obj,
         }
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+            send_mail_contact_us(email , name, subject,message )
+            messages.success(request,'Thank You for contacting us, We will get back to you soon')
         return render(request, 'registeration/contact.html',context)
 
 
@@ -62,6 +76,7 @@ def signup(request):
     if request.method == 'POST' and request.POST.get('signup'):
         name  = request.POST.get('name')
         email = request.POST.get('email')
+        email.lower()
         password = make_password(request.POST.get('password'))
         phone = request.POST.get('phone')
         try:
@@ -74,14 +89,14 @@ def signup(request):
             NewLoginObject = login(email=data,password=password)
             NewLoginObject.save()
             send_mail_after_registration(email,auth_token)
-            context = {
-                "msg":"successfully",
-            }
+            messages.success(request,'We have sent you verification link please verify your account')
             return redirect('/login')
         else:
             context ={
                 "msg":"user already exists",
             }
+            messages.success(request,'User already exists Please verify Your Account')
+            return render(request,'registeration/signup.html',{})
     return render(request,'registeration/signup.html',{})
 
 
@@ -98,8 +113,6 @@ def login1(request):
             "user_id":request.session['user_login_user_id'],
         }
         return render(request,'',{})
-    #print(request.method)
-    #print(request.POST.get('login'))
     if request.method == 'POST' and request.POST.get('login'):
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -107,8 +120,10 @@ def login1(request):
         try:
             data = registration.objects.get(email=email)    
         except:
+            messages.error(request, 'User not found')
             print("user not found")
         else:
+            print(data.is_verified)
             if data.is_verified:
                 password = str(login.objects.get(email=data).password)
                 usdp=str(request.POST.get('password'))
@@ -122,10 +137,16 @@ def login1(request):
                     return redirect('/')
                 #return render(request,'registeration/navbar.html', context)
                 else:
+                    
                     context={
                         "msg":"password not correct",
                     }
+                messages.error(request, 'Incorrect Password')
                 return redirect('/login')
+            else:
+                messages.error(request,'Account not verified')
+                return render(request,'registeration/login.html')
+
         return render(request,'registeration/login.html')
     return render(request,'registeration/login.html',{})
 
@@ -326,6 +347,9 @@ def send_mail_after_registration(email , token):
     recipient_list = [email]
     send_mail(subject, message , email_from ,recipient_list )
 
+
+
+
 def verify(request , auth_token):
     try:
         profile_obj = registration.objects.filter(auth_token = auth_token).first()
@@ -344,3 +368,14 @@ def verify(request , auth_token):
     except Exception as e:
         print(e)
         return redirect('/')
+
+
+
+def send_mail_contact_us(email , name, subject,message ):
+    subject = subject + ' ' +name 
+    message = str(message) + '\n' +'name = ' + name + '\n email = ' + email
+    
+    email_id = email
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [settings.EMAIL_GET_USER]
+    send_mail(subject, message , email_from ,recipient_list )

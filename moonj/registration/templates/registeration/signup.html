@@ -29,6 +29,14 @@
                         <label for="pwd">Password:</label>
                         <input type="password" required class="form-control" placeholder="Enter password" id="pwd" name="password">
                     </div>
+                    {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-info">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+      
+                {% endif %}
                     <button type="submit" class="btn btn-primary" value="signup" name="signup">Submit</button>
                     <div>Already have an Account <a href="/login">Login</a></div>
                 </form>
