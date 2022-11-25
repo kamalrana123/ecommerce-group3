@@ -379,3 +379,8 @@ def send_mail_contact_us(email , name, subject,message ):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [settings.EMAIL_GET_USER]
     send_mail(subject, message , email_from ,recipient_list )
+
+
+
+def forgotPassword(request):
+    pass
