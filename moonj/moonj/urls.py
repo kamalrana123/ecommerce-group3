@@ -37,6 +37,7 @@ urlpatterns = [
     path('edit_your_profile/',res.change_profile),
     path('change_password/',res.change_password),
     path('verify/<auth_token>',res.verify),
+    # path('order_summary')
 
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
