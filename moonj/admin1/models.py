@@ -5,3 +5,12 @@ class admin_login(models.Model):
     name = models.CharField(max_length=100)
     user_id = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
+class Employee(models.Model):
+    employee_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    bank_account = models.IntegerField()
+    status = models.BooleanField(default=True)
+    pass
+class Team_Management(models.Model):
+    
+    pass

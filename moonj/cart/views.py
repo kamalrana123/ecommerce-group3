@@ -3,7 +3,11 @@ from django.http import HttpResponse
 from .models import product,cart,trasaction,user_orders,category
 from registration.models import registration,login,Address
 from registration.views import login1
+from django.conf import settings
 from datetime import datetime
+
+import razorpay
+client = razorpay.Client(auth=(settings.RAZORPAY_API_KEY,settings.RAZORPAY_API_SECRET_KEY))
 # Create your views here.
 
 class user_data_object():
@@ -133,8 +137,32 @@ def remove_from_cart(request):
     return redirect('/login')
 
 
+class Address1():
+    def __init__(self,address_id,flat,area,city,pincode,state,country):
+        self.address_id=address_id
+        self.flat=flat
+        self.area =area
+        self.pincode=pincode
+        self.city=city
+        self.state = state
+        self.coutry=country
+
+
 def checkout(request):
-    return render(request,'registeration/checkout.html')
+    adder_obj =[]
+    if not request.session.has_key('user_login_user_id'):
+        return redirect('/login')
+    user_obj = user_data_object("","")
+    if request.session.has_key('user_login_user_id'):
+        user_id= request.session['user_login_user_id']
+        user_data = registration.objects.get(email=user_id)
+        name = user_data.name
+        user_obj = user_data_object(user_id,name)
+        Adres = Address.objects.filter(email=user_data)
+        print(Adres)
+        for x in Adres:
+            adr_obj = Address1(x.address_id,x.flat,x.area,x.city,x.pincode,x.state,x.country)
+            adder_obj.append(adr_obj)
     if request.session.has_key('user_login_user_id') and request.GET.get("checkout"):
         user_id = request.session['user_login_user_id']
         data = registration.objects.get(email =user_id)
@@ -144,8 +172,15 @@ def checkout(request):
            product_id = x.product_id.product_id;
            price = int(product.objects.get(product_id=product_id).price)
            total_price= total_price+(price*x.quantity)
-        return HttpResponse(total_price)
+        
+    context={
+        "data":user_obj,
+        "data1":adder_obj
+    }
+    return render(request,'registeration/checkout.html',context)
 
+def payment():
+    pass
 
 class orders_users():
     def __init__(self,product_name,product_id,quantity, price,status,time,img):

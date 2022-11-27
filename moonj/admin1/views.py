@@ -1,11 +1,35 @@
 from django.shortcuts import render
 from cart.models import product,category
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+from django.conf import settings
+from django.core.mail import send_mail
 from .models import *
+
 
 class cate():
     def __init__(self,category_id,category_name):
         self.category_id = category_id
-        self.catefory_name = category_name 
+        self.catefory_name = category_name
+
+
+def admin_login(request):
+    user_id = request.POST.get('user_id')
+    password = str(request.POST.get('password'))
+    try:
+        data = admin_login.objects.get(user_id=user_id)
+        object_pass = str(admin_login.objects.get(user_id=user_id).password)
+        if check_password(password,object_pass):
+            request.session['admin_session'] = user_id
+
+    except:
+        messages.error(request,'admin not found')
+        pass
+    else:
+
+        pass
+
 def add_item(request):
     if request.session.has_key('admin_login_id'):
         data = category.objects.all()
