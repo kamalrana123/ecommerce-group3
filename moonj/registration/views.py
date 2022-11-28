@@ -22,7 +22,7 @@ class user_data_object():
 
 def home(request):
     if not request.session.has_key('user_login_user_id'):
-        return render(request,'registeration/navbar.html')
+        return render(request,'registeration/order_summary.html')
     user_id= request.session['user_login_user_id']
     try:
         data_obj = registration.objects.get(email=user_id)

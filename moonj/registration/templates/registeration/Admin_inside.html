@@ -2,11 +2,33 @@
 {% load static %}
 {% block content %}
 <h1 style="text-align:center; color:white;background-color: rgba(255,0,0,0.721);"> Admin Dashboard</h1>
-    <div class="card w-25 border-danger m-5 m-5">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Button</a>
-        </div>
+<div class="row" style="margin-bottom:5vh;margin-top:5vh">
+  <div class="col-sm-6 col-lg-4">
+    <div class="card border-danger">
+      <div class="card-body">
+        <h1 class="card-title">Product Management</h1>
+        <!-- <h4>To Add A New Product Click Here</h4> -->
+        <a href="#" class="btn btn-danger">Products</a>
       </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <div class="card border-danger">
+      <div class="card-body">
+        <h1 class="card-title">Employee Management</h1>
+        <!-- <h4>To Add A New Product Click Here</h4> -->
+        <a href="#" class="btn btn-danger">Employee Management</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <div class="card border-danger">
+      <div class="card-body">
+        <h1 class="card-title">Inventory Management</h1>
+        <!-- <h4>To Add A New Product Click Here</h4> -->
+        <a href="#" class="btn btn-danger">Inventory</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
