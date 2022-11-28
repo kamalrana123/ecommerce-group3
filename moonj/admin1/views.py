@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from cart.models import product,category
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
@@ -14,24 +14,39 @@ class cate():
         self.catefory_name = category_name
 
 
-def admin_login(request):
-    user_id = request.POST.get('user_id')
-    password = str(request.POST.get('password'))
-    try:
-        data = admin_login.objects.get(user_id=user_id)
-        object_pass = str(admin_login.objects.get(user_id=user_id).password)
-        if check_password(password,object_pass):
-            request.session['admin_session'] = user_id
-
-    except:
-        messages.error(request,'admin not found')
+class admin_profile():
+    def __init__(self,user_id):
+        self.user_id = user_id
         pass
-    else:
 
-        pass
+
+def admin_login1(request):
+    if request.method == 'POST' and request.POST.get('adminlogin'):
+        user_id = request.POST.get('user_id')
+        password = str(request.POST.get('password'))
+        user_id.lower()
+        try:
+            data = admin_login.objects.get(user_id=user_id)
+            object_pass = str(admin_login.objects.get(user_id=user_id).password)
+            if check_password(password,object_pass):
+                request.session['admin_session'] = user_id
+                admin_pr = admin_profile("user_id")
+                context ={
+                    "data":admin_pr,
+                }
+                return redirect('/admin_dashboard')
+        except:
+            print("error")
+            messages.error(request,'admin not found')
+            pass
+        else:
+            pass
+    return render(request,'registeration/admin_login.html')
 
 def add_item(request):
-    if request.session.has_key('admin_login_id'):
+    if not request.session.has_key('admin_session'):
+        return redirect('/admin_login')
+    if request.session.has_key('admin_session'):
         data = category.objects.all()
         obj_list =[]
         for x in data:
@@ -40,7 +55,7 @@ def add_item(request):
         context = {
             "data":obj_list,
         }
-    if request.session.has_key('admin_login_id') and request.GET.get('add_item'):
+    if request.session.has_key('admin_session') and request.GET.get('add_item'):
         product_name = request.GET.get('product_name')
         description = request.GET.get('description')
         quantity = request.GET.get('quantity')
@@ -50,11 +65,35 @@ def add_item(request):
         obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=category_id,price = price)
         obj.save()
 
+
+
+def add_product(request):
+    if not request.session.has_key('admin_session'):
+        return redirect('/admin_login')
+    if request.session.has_key('admin_session') and request.GET.get('add_item'):
+        product_name = request.GET.get('product_name')
+        description = request.GET.get('description')
+        quantity = request.GET.get('quantity')
+        image = request.GET.get('image')
+        category_id = request.GET.get('category_id')
+        price = request.GET.get('price')
+        try:
+            data = product.objects.get(product_name=product_name)
+            if data:
+                messages.success(request,'product already exists')
+        except:
+            pass
+        else:
+            obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=category_id,price = price)
+            obj.save()
+            messages.success(request,'product added')
+
+
 def update_product(request):
     if request.session.has_key('admin_login_id') and request.GET.get('update_product'):
         product_id = request.GET.get('product_id')
         #getting information from the user
-        
+    
         data_obj = product.objects.get(product_id=product_id)
         product_name = request.GET.get('product_name')
         description = request.GET.get('description')
@@ -129,3 +168,18 @@ def update_profile(request):
             admin_object.save()
             
 
+ 
+def admin_dashboard(request):
+    #return render(request,'registeration/admin_inside.html')
+    admin_pr = admin_profile("")
+    if not request.session.has_key('admin_session'):
+        return redirect('/admin_login')
+    if request.session.has_key('admin_session'):
+        user_id = request.session['admin_session']
+        admin_pr = admin_profile(user_id) 
+        return render(request,'registeration/admin_inside.html')
+    pass
+
+def manage_product():
+    
+    pass

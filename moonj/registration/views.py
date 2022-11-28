@@ -383,4 +383,6 @@ def send_mail_contact_us(email , name, subject,message ):
 
 
 def forgotPassword(request):
+    if request.POST.get('forgot_password'):
+        pass
     pass

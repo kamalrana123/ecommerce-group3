@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from registration import views as res
 from cart import views as car
+from admin1 import views as admin1
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
@@ -37,6 +38,8 @@ urlpatterns = [
     path('edit_your_profile/',res.change_profile),
     path('change_password/',res.change_password),
     path('verify/<auth_token>',res.verify),
+    path('admin_login/',admin1.admin_login1),
+    path('admin_dashboard/',admin1.admin_dashboard),
     # path('order_summary')
 
 
