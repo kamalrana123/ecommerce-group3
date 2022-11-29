@@ -40,21 +40,18 @@
                            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="/cart">Cart</a>
-                        </li>
-                        <li class="nav-item">
                            <a class="nav-link" href="/product">Products</a>
                         </li>
-                        <!-- <li class="nav-item">
-                           {% if data.name%}
-                           <a class="nav-link" href="/profile">{{data.name}}</a>
-                           {% else %}
-                           <a class="nav-link" href="/login">Login/SignUp</a>
-                            {% endif %} 
-                        </li> -->
                         <li class="nav-item">
+                           {% if data.name%}
+                           <a class="nav-link" href="">{{data.name}}</a>
+                           {% else %}
+                           <a class="nav-link" href="/admin_login">Login</a>
+                            {% endif %} 
+                        </li> 
+                        {% comment %} <li class="nav-item">
                            <a class="nav-link" href="/contact">Contact</a>
-                        </li>
+                        </li> {% endcomment %}
                         <li class="nav-item">
                            {% if data.name%}
                            <a class="nav-link" href="/logout">logout</a>

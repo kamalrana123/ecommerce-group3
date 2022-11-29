@@ -11,7 +11,7 @@ from .models import *
 class cate():
     def __init__(self,category_id,category_name):
         self.category_id = category_id
-        self.catefory_name = category_name
+        self.category_name = category_name
 
 
 class admin_profile():
@@ -43,50 +43,66 @@ def admin_login1(request):
             pass
     return render(request,'registeration/admin_login.html')
 
-def add_item(request):
+def add_product(request):
     if not request.session.has_key('admin_session'):
         return redirect('/admin_login')
     if request.session.has_key('admin_session'):
-        data = category.objects.all()
+        data = category.objects.all().order_by('category_name')
         obj_list =[]
         for x in data:
             obj = cate(x.category_id,x.category_name)
             obj_list.append(obj)
         context = {
-            "data":obj_list,
+            "data1":obj_list,
         }
-    if request.session.has_key('admin_session') and request.GET.get('add_item'):
-        product_name = request.GET.get('product_name')
-        description = request.GET.get('description')
-        quantity = request.GET.get('quantity')
-        image = request.GET.get('image')
-        category_id = request.GET.get('category_id')
-        price = request.GET.get('price')
-        obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=category_id,price = price)
-        obj.save()
-
-
-
-def add_product(request):
-    if not request.session.has_key('admin_session'):
-        return redirect('/admin_login')
-    if request.session.has_key('admin_session') and request.GET.get('add_item'):
-        product_name = request.GET.get('product_name')
-        description = request.GET.get('description')
-        quantity = request.GET.get('quantity')
-        image = request.GET.get('image')
-        category_id = request.GET.get('category_id')
-        price = request.GET.get('price')
+        
+    if request.session.has_key('admin_session') and request.POST.get('add_item'):
+       
+        product_name = request.POST.get('product_name')
+        description = request.POST.get('description')
+        quantity = request.POST.get('quantity')
+        image = request.FILES['image']
+        category_id = request.POST.get('category_id')
+        price = request.POST.get('price')
         try:
             data = product.objects.get(product_name=product_name)
             if data:
                 messages.success(request,'product already exists')
         except:
-            pass
+            categ = category.objects.get(category_id=category_id)
+            try:
+                obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=categ,price = price)
+                obj.save()
+                messages.success(request,'product added')
+
+            except:
+                pass
         else:
-            obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=category_id,price = price)
-            obj.save()
-            messages.success(request,'product added')
+            pass
+            
+    return render(request,'registeration/Add_product.html',context)
+
+# def add_product(request):
+#     return render(request,'registeration/Add_product.html')
+#     if not request.session.has_key('admin_session'):
+#         return redirect('/admin_login')
+#     if request.session.has_key('admin_session') and request.GET.get('add_item'):
+#         product_name = request.GET.get('product_name')
+#         description = request.GET.get('description')
+#         quantity = request.GET.get('quantity')
+#         image = request.GET.get('image')
+#         category_id = request.GET.get('category_id')
+#         price = request.GET.get('price')
+#         try:
+#             data = product.objects.get(product_name=product_name)
+#             if data:
+#                 messages.success(request,'product already exists')
+#         except:
+#             pass
+#         else:
+#             obj = product(product_name = product_name,description=description,quantity=quantity,image=image,category_id=category_id,price = price)
+#             obj.save()
+#             messages.success(request,'product added')
 
 
 def update_product(request):
@@ -180,6 +196,15 @@ def admin_dashboard(request):
         return render(request,'registeration/admin_inside.html')
     pass
 
+
+def manage_tream(request):
+    return render(request,'registeration/work_done.html')
+    pass
+
+
 def manage_product():
     
+    pass
+def update_inventory(request):
+    return render(request,'registeration/Update_inventory.html')
     pass

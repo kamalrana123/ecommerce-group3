@@ -40,6 +40,11 @@ urlpatterns = [
     path('verify/<auth_token>',res.verify),
     path('admin_login/',admin1.admin_login1),
     path('admin_dashboard/',admin1.admin_dashboard),
+    path('add_product/',admin1.add_product),
+    path('manage_team/',admin1.manage_tream),
+    path('update_inventory/',admin1.update_inventory)
+
+
     # path('order_summary')
 
 
