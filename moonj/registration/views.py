@@ -403,14 +403,28 @@ def send_mail_contact_us(email , name, subject,message ):
     send_mail(subject, message , email_from ,recipient_list )
 
 
+def send_mail_forgot_password( name,mail,token):
+    email_id = mail
+    subject="Password reset"
+    message = f'Hi paste the link to change your password http://127.0.0.1:8000/verifyPassword/{token}'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email_id]
+    send_mail(subject, message , email_from ,recipient_list )
+    pass
 
 def forgotPassword(request):
     if request.POST.get('forgot_password'):
         email = request.POST.get('email')
         try:
-             registration.objects.get(email=email)
+            data = registration.objects.get(email=email)
+            path_token =str(uuid.uuid4())
+            data.path_token=path_token
+            data.save()
+            send_mail_forgot_password(data.name,email,path_token)
+            
         except:
-            pass
-        else:
-            pass
-    pass
+            return redirect('/login')
+        
+    return render(request,'registeration/forgotPassword.html')
+    
+

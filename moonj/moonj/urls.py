@@ -48,7 +48,8 @@ urlpatterns = [
     path('inventory_management/',admin1.manage_product),
     path('employe_manage/',admin1.employe_manage),
     path('add_employe/',admin1.add_employe),
-    path('success/',car.success)
+    path('success/',car.success),
+    path('removeCart/',car.removeCart)
 
 
     # path('order_summary')

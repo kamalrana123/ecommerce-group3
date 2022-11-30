@@ -34,9 +34,9 @@ class trasaction(models.Model):
 
 class user_orders(models.Model):
     email = models.ForeignKey(registration,on_delete=models.CASCADE)
-    time = models.TimeField(auto_created=True)
+    time = models.TimeField(auto_now=True)
     product_id = models.ForeignKey(product,on_delete=models.CASCADE)
     price =models.IntegerField()
     quantity= models.IntegerField()
-    status  = models.BooleanField()
-    razor_pay_trans_id = models.CharField(max_length=500)
+    status  = models.BooleanField(default=False)
+    razor_pay_trans_id = models.CharField(max_length=500,null=True)

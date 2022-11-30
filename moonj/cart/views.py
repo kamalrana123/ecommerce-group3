@@ -208,7 +208,7 @@ def orders(request):
     if request.session.has_key('user_login_user_id'):
         user_id=request.session['user_login_user_id']
         data = registration.objects.get(email=user_id)
-        data_obj = user_orders.objects.filter(email=data).order_by('time').reverse()
+        data_obj = user_orders.objects.filter(email=data,status =True).order_by('time').reverse()
         for x in data_obj:
             product_id = x.product_id.product_id
             product_obj = product.objects.get(product_id=product_id)
@@ -284,9 +284,32 @@ def order_summary(request):
         "data1":object_list,
         "total_price":total_price,
     }
-    print(context)
+    user_id = request.session['user_login_user_id']
+    data = registration.objects.get(email= user_id)
+    data1 = cart.objects.filter(email=data).order_by('time').reverse()
+    for x in data1:
+
+            prod = product.objects.get(product_id = x.product_id.product_id)
+           
+            ob = user_orders(email = data,product_id = prod,price= prod.price,quantity = x.quantity,razor_pay_trans_id = payment_order_id)
+            ob.save()
     return render(request,'registeration/order_summary.html',context)
+
+def removeCart(request):
+    if not request.session.has_key('user_login_user_id'):
+        return redirect('/login')
+    if request.session['user_login_user_id']:
+        user_id = request.session['user_login_user_id']
+        data = registration.objects.get(email= user_id)
+        data1 = cart.objects.filter(email=data).order_by('time').reverse()
+        print(data1)
+        for x in data1:
+            x.delete()         
+        return redirect('/')
     
+        
+
+
 @csrf_exempt
 def success(request):
     if request.method =="POST":
@@ -303,10 +326,13 @@ def success(request):
                 result = client.utility.verify_payment_signature(params_dict)
                 print(result)
                 if result==True:
-                    print(user_id)
-                    return HttpResponse('success')
+                    data = user_orders.objects.filter(razor_pay_trans_id = order_id)
+                    for  x in data:
+                        x.status = True
+                        x.save()
+                return redirect('/removeCart')
             except:
-                return HttpResponse('')
+                return redirect('/cart')
 
     return redirect('/login')
 

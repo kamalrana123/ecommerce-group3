@@ -5,6 +5,7 @@ class registration(models.Model):
     email = models.EmailField(max_length=254,verbose_name="email",unique=True)
     phone = models.CharField(max_length=50,verbose_name="phone")
     auth_token=models.CharField(max_length=100)
+    path_token = models.CharField(max_length=100 )
     is_verified = models.BooleanField(default=False)
     def __str__(self):
         return self.name
