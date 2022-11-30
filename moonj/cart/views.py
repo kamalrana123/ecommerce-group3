@@ -4,10 +4,11 @@ from .models import product,cart,trasaction,user_orders,category
 from registration.models import registration,login,Address
 from registration.views import login1
 from django.conf import settings
+from moonj.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
 from datetime import datetime
 
 import razorpay
-client = razorpay.Client(auth=(settings.RAZORPAY_API_KEY,settings.RAZORPAY_API_SECRET_KEY))
+client = razorpay.Client(auth=(RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY))
 # Create your views here.
 
 class user_data_object():
@@ -163,20 +164,24 @@ def checkout(request):
         for x in Adres:
             adr_obj = Address1(x.address_id,x.flat,x.area,x.city,x.pincode,x.state,x.country)
             adder_obj.append(adr_obj)
-    if request.session.has_key('user_login_user_id') and request.GET.get("checkout"):
-        user_id = request.session['user_login_user_id']
-        data = registration.objects.get(email =user_id)
-        cart_data = cart.objects.filter(email= data)
-        total_price = 0
-        for x in cart_data:
-           product_id = x.product_id.product_id;
-           price = int(product.objects.get(product_id=product_id).price)
-           total_price= total_price+(price*x.quantity)
-        
     context={
         "data":user_obj,
         "data1":adder_obj
     }
+    if request.method=="GET" and request.GET.get('add_new_address'):
+        return redirect('/add_new_address')
+    if request.method=="GET" and request.GET.get('checkout'):
+        return redirect('/order_summary')
+    # if request.session.has_key('user_login_user_id') and request.GET.get("checkout"):
+    #     user_id = request.session['user_login_user_id']
+    #     data = registration.objects.get(email =user_id)
+    #     cart_data = cart.objects.filter(email= data)
+    #     total_price = 0
+    #     for x in cart_data:
+    #        product_id = x.product_id.product_id;
+    #        price = int(product.objects.get(product_id=product_id).price)
+    #        total_price= total_price+(price*x.quantity)
+        return redirect('/order_summary')
     return render(request,'registeration/checkout.html',context)
 
 def payment():
@@ -216,3 +221,70 @@ def orders(request):
         print(object_list)
         return render(request,'registeration/orders.html',context)
     return redirect('/login')
+
+
+class cart_object1():
+    def __init__(self,sr_no,product_name,product_id,price,quantity,img,product_transaction_id,total_price):
+        self.sr_no= sr_no
+        self.product_name = product_name
+        self.product_id = product_id
+        self.price = price
+        self.quantity =quantity
+        self.img = img
+        self.total_price = total_price
+        self.product_transaction_id =product_transaction_id
+
+
+def order_summary(request):
+    object_list = []
+    if not request.session.has_key('user_login_user_id'):
+        return redirect('/login')
+        pass
+    if request.session.has_key('user_login_user_id'):
+        user_id = request.session['user_login_user_id']
+        data = registration.objects.get(email= user_id)
+        data1 = cart.objects.filter(email=data).order_by('time').reverse()
+        print(data1)
+        index=1
+        for x in data1:
+
+            prod = product.objects.get(product_id = x.product_id.product_id)
+            print(prod.product_name)
+            ob = cart_object1(index,prod.product_name,prod.product_id,prod.price,x.quantity,prod.image,x.product_transaction_id,int(prod.price) * int(prod.quantity))
+            print(prod.image)           
+            object_list.append(ob)
+            index = index+1
+    total_price=0
+    if request.session.has_key('user_login_user_id'):
+        user_id = request.session['user_login_user_id']
+        data = registration.objects.get(email =user_id)
+        cart_data = cart.objects.filter(email= data)
+        total_price = 0
+        for x in cart_data:
+           product_id = x.product_id.product_id;
+           price = int(product.objects.get(product_id=product_id).price)
+           total_price= total_price + int(price*int(x.quantity))
+
+           
+    
+    DATA = {
+    "amount": int(int(total_price) * 100),
+    "currency": "INR",
+    "receipt": "receipt#1",
+    "notes": {
+        "key1": "value3",
+        "key2": "value2"
+        }
+    }      
+    payment_order = client.order.create(data=DATA)
+    payment_order_id = payment_order['id']
+    context ={
+        "user_pay_id":RAZORPAY_API_KEY,
+        "order_id":payment_order_id,
+        "data1":object_list,
+        "total_price":total_price,
+    }
+    print(context)
+    return render(request,'registeration/order_summary.html',context)
+    
+    pass

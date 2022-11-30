@@ -42,7 +42,9 @@ urlpatterns = [
     path('admin_dashboard/',admin1.admin_dashboard),
     path('add_product/',admin1.add_product),
     path('manage_team/',admin1.manage_tream),
-    path('update_inventory/',admin1.update_inventory)
+    path('update_inventory/<pid>',admin1.update_inventory),
+    path('order_summary/',car.order_summary),
+    path('success/',res.success)
 
 
     # path('order_summary')

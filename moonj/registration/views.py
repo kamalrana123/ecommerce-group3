@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse 
 from .models import registration,login,Address
+from cart.models import product
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 import uuid
 import requests
@@ -18,11 +20,30 @@ class user_data_object():
         self.email = email
         self.name = name
 
-
+class dash_product():
+    def __init__(self,product_name,product_id,price,quantity,img):
+        self.product_name = product_name
+        self.product_id = product_id
+        self.price = price
+        self.quantity =quantity
+        self.img=img
 
 def home(request):
+    object_list = []
+    try:
+        data = product.objects.all()[:3]
+    except:
+        print("not loaded")
+    else:
+        for x in data:
+            ob = dash_product(x.product_name,x.product_id,x.price,x.quantity,x.image)
+            print(ob.img.url)
+            object_list.append(ob)
     if not request.session.has_key('user_login_user_id'):
-        return render(request,'registeration/order_summary.html')
+        context={
+            "data1":object_list,
+        }
+        return render(request,'registeration/navbar.html',context)
     user_id= request.session['user_login_user_id']
     try:
         data_obj = registration.objects.get(email=user_id)
@@ -31,6 +52,7 @@ def home(request):
     else:
         user_obj = user_data_object(data_obj.email,data_obj.name )
         context={
+            "data1":object_list,
             "data":user_obj,
         }
         return render(request,'registeration/navbar.html',context)
@@ -384,5 +406,14 @@ def send_mail_contact_us(email , name, subject,message ):
 
 def forgotPassword(request):
     if request.POST.get('forgot_password'):
-        pass
+        email = request.POST.get('email')
+        try:
+             registration.objects.get(email=email)
+        except:
+            pass
+        else:
+            pass
     pass
+@csrf_exempt
+def success(request):
+    return HttpResponse("success")

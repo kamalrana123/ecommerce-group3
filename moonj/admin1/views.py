@@ -206,5 +206,13 @@ def manage_product():
     
     pass
 def update_inventory(request):
+    # if not request.session.has_key('admin_session'):
+    #     return redirect('/admin_login')
+    # if request.method == "POST" and request.POST.get('update'):
+    #     uid = request.GET.get('pid')
+    #     try:
+    #         data = product.objects.get()
+    #     name = request.POST.get('product_name')
+        
     return render(request,'registeration/Update_inventory.html')
     pass
