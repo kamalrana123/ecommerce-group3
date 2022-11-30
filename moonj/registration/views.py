@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
-
+from random import randint, randrange
 import uuid
 import requests
 import json
@@ -403,28 +403,29 @@ def send_mail_contact_us(email , name, subject,message ):
     send_mail(subject, message , email_from ,recipient_list )
 
 
-def send_mail_forgot_password( name,mail,token):
-    email_id = mail
+def send_mail_forgot_password( name,email,token):
+    email_id = email
     subject="Password reset"
-    message = f'Hi paste the link to change your password http://127.0.0.1:8000/verifyPassword/{token}'
+    message = "Your OTP : " + token
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email_id]
     send_mail(subject, message , email_from ,recipient_list )
-    pass
 
 def forgotPassword(request):
     if request.POST.get('forgot_password'):
         email = request.POST.get('email')
         try:
             data = registration.objects.get(email=email)
-            path_token =str(uuid.uuid4())
+            path_token = randint(100000, 999999)
             data.path_token=path_token
             data.save()
             send_mail_forgot_password(data.name,email,path_token)
-            
+            context={
+                "user_id":email,
+            }
+            return render(request,'registeration/CheckOtp.html',context)
         except:
             return redirect('/login')
-        
-    return render(request,'registeration/forgotPassword.html')
+    return render(request,'registeration/forgotpassword.html')
     
 

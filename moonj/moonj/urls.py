@@ -49,7 +49,8 @@ urlpatterns = [
     path('employe_manage/',admin1.employe_manage),
     path('add_employe/',admin1.add_employe),
     path('success/',car.success),
-    path('removeCart/',car.removeCart)
+    path('removeCart/',car.removeCart),
+    path('forgotPassword/',res.forgotPassword)
 
 
     # path('order_summary')
