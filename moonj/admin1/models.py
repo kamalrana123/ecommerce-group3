@@ -10,8 +10,12 @@ class Employee(models.Model):
     name = models.CharField(max_length=100)
     bank_account = models.IntegerField()
     status = models.BooleanField(default=True)
+    salary=models.IntegerField(default=0)
     def __str__(self):
         return self.name
+    pass
+class employee_work():
+    
     pass
 class Team_Management(models.Model):
     

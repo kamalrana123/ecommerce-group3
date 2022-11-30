@@ -14,51 +14,17 @@
             </tr>
         </thead>
         <tbody>
+            {% for x in data1 %}
             <tr>
-                <th scope="row">1</th>
-                <td>1</td>
-                <td>Sanjay</td>
-                <td>40000</td>
-                <td> <Button
-                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button>
+                <th scope="row">{{x.sr_no}}</th>
+                <td>{{ x.emp_id }}</td>
+                <td>{{ x.name }}</td>
+                <td>{{ x.salary }}</td>
+                <td> <a href="/add_employe"><Button
+                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button></a>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>2</td>
-                <td>Saurabh Kumar Mishra</td>
-                <td>48000</td>
-                <td> <Button
-                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>3</td>
-                <td>Saurabh </td>
-                <td>47000</td>
-                <td> <Button
-                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">4</th>
-                <td>4</td>
-                <td>Saurabh Anand Pandey</td>
-                <td>45000</td>
-                <td> <Button
-                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">5</th>
-                <td>5</td>
-                <td>Dheeraj Kumar</td>
-                <td>55000</td>
-                <td> <Button
-                        style="background-color:rgba(255,0,0,0.721);height:5vh;width:6vw; color:white;font-weight: bold;border: none; border-radius: 5%;">Work</Button>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

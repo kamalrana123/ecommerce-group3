@@ -201,9 +201,32 @@ def manage_tream(request):
     return render(request,'registeration/work_done.html')
     pass
 
+class cart_object1():
+    def __init__(self,sr_no,product_name,product_id,price,quantity,img):
+        self.sr_no= sr_no
+        self.product_name = product_name
+        self.product_id = product_id
+        self.price = price
+        self.quantity =quantity
+        self.img = img
+        #self.total_price = total_price
+        
 
-def manage_product():
-    
+def manage_product(request):
+    object_list = []
+    prod1 = product.objects.all().order_by('product_name')
+    index=1
+    for x in prod1:
+
+           
+            ob = cart_object1(index,x.product_name,x.product_id,x.price,x.quantity,x.image)
+            #print(.image)           
+            object_list.append(ob)
+            index = index+1
+    context ={
+        "data1":object_list,
+    }
+    return render(request,'registeration/inventory_management.html',context)    
     pass
 def update_inventory(request):
     # if not request.session.has_key('admin_session'):
@@ -215,4 +238,30 @@ def update_inventory(request):
     #     name = request.POST.get('product_name')
         
     return render(request,'registeration/Update_inventory.html')
+    pass
+
+class emp():
+    def __init__(self,sr_no,name,salary,emp_id):
+        self.sr_no = sr_no
+        self.name= name
+        self.salary =salary
+        self.emp_id =emp_id
+        pass
+
+def employe_manage(request):
+    obj_list  = []
+    if request.session.has_key('admin_session'):
+        data1 =  Employee.objects.all()
+        index=1
+        for x in data1:
+            ob = emp(index,x.name,x.salary,x.employee_id)
+            obj_list.append(ob)
+            index =index+1
+        context ={
+            "data1" : obj_list,
+        }
+        return render(request,'registeration/employee.html',context)
+    pass
+def add_employe(request):
+    return render(request,'registeration/Work_done.html')
     pass

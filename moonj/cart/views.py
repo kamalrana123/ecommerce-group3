@@ -6,6 +6,7 @@ from registration.views import login1
 from django.conf import settings
 from moonj.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 import razorpay
 client = razorpay.Client(auth=(RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY))
@@ -239,7 +240,6 @@ def order_summary(request):
     object_list = []
     if not request.session.has_key('user_login_user_id'):
         return redirect('/login')
-        pass
     if request.session.has_key('user_login_user_id'):
         user_id = request.session['user_login_user_id']
         data = registration.objects.get(email= user_id)
@@ -264,9 +264,9 @@ def order_summary(request):
            product_id = x.product_id.product_id;
            price = int(product.objects.get(product_id=product_id).price)
            total_price= total_price + int(price*int(x.quantity))
-
-           
-    
+        user_data = registration.objects.get(email =user_id)
+        trns_obj =trasaction(email = user_data,status = False)
+        id = trns_obj.trasaction_id
     DATA = {
     "amount": int(int(total_price) * 100),
     "currency": "INR",
@@ -287,4 +287,29 @@ def order_summary(request):
     print(context)
     return render(request,'registeration/order_summary.html',context)
     
-    pass
+@csrf_exempt
+def success(request):
+    if request.method =="POST":
+         
+            payment_id = request.POST.get('razorpay_payment_id','')
+            order_id = request.POST.get('razorpay_order_id','')
+            signature = request.POST.get('razorpay_signature')
+            params_dict = {
+                'razorpay_order_id' : order_id,
+                'razorpay_payment_id':payment_id,
+                'razorpay_signature':signature
+            }
+            try:
+                result = client.utility.verify_payment_signature(params_dict)
+                print(result)
+                if result==True:
+                    print(user_id)
+                    return HttpResponse('success')
+            except:
+                return HttpResponse('')
+
+    return redirect('/login')
+
+
+def manage_product(request):
+    return render(request,'registeration/mange_product.html')

@@ -414,6 +414,3 @@ def forgotPassword(request):
         else:
             pass
     pass
-@csrf_exempt
-def success(request):
-    return HttpResponse("success")

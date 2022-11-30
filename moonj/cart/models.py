@@ -22,17 +22,21 @@ class cart(models.Model):
     quantity = models.IntegerField()
     time = models.TimeField(auto_now=True,null=True)
 
+
+
+
 class trasaction(models.Model):
     trasaction_id = models.AutoField(primary_key=True)
     email = models.ForeignKey(registration,on_delete=models.CASCADE)
-    product_transaction_id = models.ForeignKey(cart,on_delete=models.CASCADE)
+    #product_transaction_id = models.ForeignKey(cart,on_delete=models.CASCADE)
     status = models.IntegerField()
     time = models.TimeField(auto_now=True,null=True)
 
 class user_orders(models.Model):
     email = models.ForeignKey(registration,on_delete=models.CASCADE)
-    time = models.TimeField()
+    time = models.TimeField(auto_created=True)
     product_id = models.ForeignKey(product,on_delete=models.CASCADE)
     price =models.IntegerField()
     quantity= models.IntegerField()
     status  = models.BooleanField()
+    razor_pay_trans_id = models.CharField(max_length=500)
