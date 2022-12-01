@@ -138,9 +138,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'officialmoonj@gmail.com'
-EMAIL_HOST_PASSWORD = 'reabcubxmzhvmrya'
-EMAIL_GET_USER = 'query.moonj@gmail.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_GET_USER = ''
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -162,5 +162,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 #SITE_ID = 1
 
-RAZORPAY_API_KEY ='rzp_test_6DhXk26t2VZtb5'
-RAZORPAY_API_SECRET_KEY='vNIyVYmqgTbpJq6NdjzToQwq'
+RAZORPAY_API_KEY =''
+RAZORPAY_API_SECRET_KEY=''
